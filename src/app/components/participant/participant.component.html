@@ -1,0 +1,163 @@
+<app-header></app-header>
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<div class="body">
+<div class="container mt-4" id="main-container">
+  
+  <div class="container mt-4">
+                  <div class="row">
+                      <div class="col-md-12">
+                          <div class="card">
+                              <div class="card-body">
+                                  <h5 class="card-title text-uppercase mb-0">Liste des Participants</h5>
+                              </div>
+                              <div class="table-responsive">
+                                <div class="container ">
+                                  <table class="table no-wrap user-table mb-0">
+                                    <thead>
+                                      <tr>
+                                        
+                                        <th scope="col" style ="font-weight: bold;" class="border-0 text-uppercase font-medium">Nom</th>
+                                        <th scope="col"  style ="font-weight: bold;" class="border-0 text-uppercase font-medium">Nombre de participant</th>
+                                      
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                <tr *ngFor="let Participant of Participants">
+                  
+                  <td>
+                      <h5 class="font-medium mb-0">{{ Participant.nom }}</h5>
+                    
+                  </td>
+                  <td>
+                      <span class="text-muted">{{ Participant.nbr}}</span><br>
+                      
+                  </td>
+                  
+                  
+                  <td>
+                    
+                    <button type="button" (click)="onOpenModal(Participant, 'delete')" class="btn btn-outline-danger btn-circle btn-lg btn-circle ml-2"><i class="fa fa-trash"></i> </button>
+                    <button type="button" (click)="onOpenModal(Participant, 'edit')" class="btn btn-outline-primary btn-circle btn-lg btn-circle ml-2"><i class="fa fa-edit"></i> </button>
+
+                  </td>
+                </tr>
+                
+              </tbody>
+              </table>
+              </div>
+              <div class="container mt-4">
+              <button type="button" class="btn btn-danger btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <i class="fa fa-plus"> Ajouter</i>  
+              </button></div>
+              </div>
+              </div>
+              </div>
+              </div>
+    </div>
+<div class="modal fade" id="exampleModal" role="dialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ajouter une Participant</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="ParticipantForm"   autocomplete="off">
+
+
+          <div class="form-group">
+             <input class="form-control"  placeholder="Nom" formControlName="nom" name="nom"> 
+          </div>
+          <br>
+          <div class="form-group">
+             <input  class="form-control"  type="number" placeholder="Nombre" formControlName="nbr" name="nbr"> 
+          </div>
+          <br>
+          
+         <br>
+          <div class="modal-footer">
+            
+             <button   data-dismiss="modal" type="submit" class="btn btn-primary" [disabled]="ParticipantForm.invalid" (click)="onAddParticipant()"
+              >Enregistrer</button>
+          </div>
+       </form>
+      </div>
+      
+    </div>
+  </div>
+
+
+
+
+</div>
+<div class="modal fade" id="deleteParticipantModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <h5 class="modal-title" id="deleteModelLabel">Supprimer le Participant {{deleteParticipant?.nom}} </h5>
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                     </button>
+                  </div>
+                  <div class="modal-body">
+                     <p>Êtes-vous sûr de vouloir supprimer le Participant {{deleteParticipant?.nom}} ?</p>
+                     <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
+                        <button (click)="onDeleteParticipant(deleteParticipant?.id)"
+                          class="btn btn-danger"
+                           data-dismiss="modal">Oui</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+  <div class="modal fade" id="updateParticipantModal" tabindex="-1" role="dialog"
+            aria-labelledby="employeeEditModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <h5 class="modal-title" id="updateEmployeeModalLabel">Modifier le Participant {{editParticipant?.nom}}</h5>
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                     </button>
+                  </div>
+                  <div class="modal-body">
+                     <form  [formGroup]="ParticipantFormedit">
+                        <div class="form-group">
+                           <label for="nom">Nom</label>
+                           <input type="text" [formControl]="ParticipantFormedit.controls.nom"
+                              ngModel="{{editParticipant?.nom}}" name="nom" class="form-control" id="nom"
+                              aria-describedby="emailHelp" required>
+                              
+                        </div>
+
+                        <div class="form-group">
+                           <label for="type">Nombre</label>
+                           <input  [formControl]="ParticipantFormedit.controls.nbr"
+                              ngModel="{{ editParticipant?.nbr}}" name="nbr" class="form-control"
+                              id="nbr" aria-describedby="emailHelp"  type="number">
+                              
+                        </div>
+                       
+                        <div class="modal-footer">
+                           <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Fermer</button>
+                           <button  [disabled]="ParticipantFormedit.invalid"  (click)="onUpdateParticipant(editParticipant?.id)"
+                              data-dismiss="modal"
+                              class="btn btn-success">Enregistrer</button>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+
+
+
+       
+        </div>
+</div>

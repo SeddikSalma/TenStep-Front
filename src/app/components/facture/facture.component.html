@@ -1,0 +1,105 @@
+<app-header></app-header>
+<kendo-pdf-export #pdf>                      
+<div class="receipt-content">
+  
+  <div class="container bootstrap snippets bootdey">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="invoice-wrapper">
+        <div class="text-left text-150">
+          <img  src="assets/images/TenStep.jpg" width="200"><br>
+        </div>
+        <br>
+   
+       
+        <div class="payment-info">
+          <div class="row">
+            <div class="col-sm-6">
+              <span>Facture No.</span>
+              <strong>#00{{Res.facture.id}}</strong>
+            </div>
+            <div class="col-sm-6 text-right">
+              <span>Date Facture</span>
+              <strong>{{Res.facture.date|slice:0:10}}</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="payment-details">
+          <div class="row">
+            <div class="col-sm-6">
+              <span>Client</span>
+              <strong>
+                {{Res.participant.nom}}
+              </strong>
+              <p>
+                989 5th Avenue <br>
+                City of monterrey <br>
+                55839 <br>
+                <a href="#">
+                  {{Res.participant.nom}}@gmail.com
+                </a>
+              </p>
+            </div>
+            <div class="col-sm-6 text-right">
+              <span>Payment ver</span>
+              <strong>
+                TenStep
+              </strong>
+              <p>
+                Rue Ibn Zeïdoune, <br>
+                Ariana<br>
+                2000 <br>
+                
+                <a href="#">
+                  info@tenstep.tn 
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="line-items">
+          <div class="headers clearfix">
+            <div class="row">
+              <div class="col-xs-4">Description</div>
+              <div class="col-xs-3">Nombre de participant</div>
+              <div class="col-xs-5 text-right">Prix</div>
+            </div>
+          </div>
+          <div class="items">
+            
+          
+            <div class="row item">
+              <div class="col-xs-4 desc">
+               Formation: {{Res.formation.nom}}
+              </div>
+              <div class="col-xs-3 qty">
+                {{Res.participant.nbr}}
+              </div>
+              <div class="col-xs-5 amount text-right">
+                {{Res.formation.prix}} Dtn
+              </div>
+            </div>
+          </div>
+          <div class="total text-right">
+            
+            <div class="field grand-total">
+              Total <span>{{Res.devis.somme}}</span>
+            </div>
+          </div>
+
+          <div class="print">
+            <button kendo-button (click)="pdf.saveAs('facture.pdf')" type="button" class="btn btn-outline-primary">Imprimer</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        Copyright © 2021. TenStep
+      </div>
+    </div>
+  </div>
+</div>
+</div>                  
+  </kendo-pdf-export>

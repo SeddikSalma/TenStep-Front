@@ -1,0 +1,173 @@
+<app-header></app-header>
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<div class="body">
+<div class="container mt-4" id="main-container">
+  
+  <div class="container mt-4">
+               <div class="row">
+                  <div class="col-md-12">
+                        <div class="card">
+                           <div class="card-body">
+                              <h5 class="card-title text-uppercase mb-0">Liste des Formations</h5>
+                           </div>
+                           <div class="table-responsive">
+                              <div class="container ">
+                              <table class="table no-wrap user-table mb-0">
+                                 <thead>
+                                    <tr>
+                                    
+                                    <th scope="col" style ="font-weight: bold;" class="border-0 text-uppercase font-medium"><u>Nom</u></th>
+                                    <th scope="col"  style ="font-weight: bold;" class="border-0 text-uppercase font-medium"><u>Nombre de journée</u></th>
+                                    <th scope="col"  style ="font-weight: bold;" class="border-0 text-uppercase font-medium"><u>Prix</u></th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+            <tr *ngFor="let formation of formations">
+               
+                     <td>
+                        <h5 class="font-medium mb-0">{{ formation.nom }}</h5>
+                        
+                     </td>
+                     <td>
+                        <span class="text-muted">{{ formation.nbr_jours}}</span><br>
+                        
+                     </td>
+                     <td>
+                        <span class="text-muted">{{ formation.prix }}</span><br>
+                        
+                     </td>
+                     
+                     <td>
+                        
+                        <button type="button" (click)="onOpenModal(formation, 'delete')" class="btn btn-outline-danger btn-circle btn-lg btn-circle ml-2"><i class="fa fa-trash"></i> </button>
+                        <button type="button" (click)="onOpenModal(formation, 'edit')" class="btn btn-outline-primary btn-circle btn-lg btn-circle ml-2"><i class="fa fa-edit"></i> </button>
+                        
+                     </td>
+                  </tr>
+                  
+                  </tbody>
+                  </table>
+                  </div>
+                  <div class="container mt-4">
+                  <button type="button" class="btn btn-danger btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                  <i class="fa fa-plus"> Ajouter</i>  
+                  </button></div>
+                  </div>
+                  </div>
+                  </div>
+                  </div>
+</div>
+<div class="modal fade" id="exampleModal" role="dialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ajouter une formation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formationForm"   autocomplete="off">
+
+
+          <div class="form-group">
+             <input class="form-control"  placeholder="Nom" formControlName="nom" name="nom"> 
+          </div>
+          <br>
+          <div class="form-group">
+             <input type="number" class="form-control"  placeholder="Nombre de jours" formControlName="nbr_jours" name="nbr_jours"> 
+          </div>
+          <br>
+          <div class="form-group">
+            <input type="number" class="form-control"  placeholder="Prix" formControlName="prix" name="prix">  
+         </div>
+         <br>
+          <div class="modal-footer">
+             
+             <button   data-dismiss="modal" type="submit" class="btn btn-primary" [disabled]="formationForm.invalid" (click)="onAddFormation()"
+              >Enregistrer</button>
+          </div>
+       </form>
+      </div>
+      
+    </div>
+  </div>
+
+
+
+
+</div>
+<div class="modal fade" id="deleteFormationModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <h5 class="modal-title" id="deleteModelLabel">Supprimer la formation {{deleteFormation?.nom}} </h5>
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                     </button>
+                  </div>
+                  <div class="modal-body">
+                     <p>Êtes-vous sûr de vouloir supprimer la formation {{deleteFormation?.nom}} ?</p>
+                     <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
+                        <button (click)="onDeleteFormation(deleteFormation?.id)"
+                          class="btn btn-danger"
+                           data-dismiss="modal">Oui</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+  <div class="modal fade" id="updateFormationModal" tabindex="-1" role="dialog"
+            aria-labelledby="employeeEditModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <h5 class="modal-title" id="updateEmployeeModalLabel">Modifier la Formation {{editFormation?.nom}}</h5>
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                     </button>
+                  </div>
+                  <div class="modal-body">
+                     <form  [formGroup]="formationFormedit">
+                        <div class="form-group">
+                           <label for="nom">Nom</label>
+                           <input type="text" [formControl]="formationFormedit.controls.nom"
+                              ngModel="{{editFormation?.nom}}" name="nom" class="form-control" id="nom"
+                              aria-describedby="emailHelp" required>
+                              
+                        </div>
+
+                        <div class="form-group">
+                           <label for="nbr_jours">Nombre de jours</label>
+                           <input  [formControl]="formationFormedit.controls.nbr_jours"
+                              ngModel="{{ editFormation?.nbr_jours}}" name="nbr_jours" class="form-control"
+                              id="nbr_jours" aria-describedby="emailHelp" type="number" >
+                              
+                        </div>
+                        <div class="form-group">
+                          <label for="prix">Capacité</label>
+                          <input  [formControl]="formationFormedit.controls.prix"
+                             ngModel="{{ editFormation?.prix}}" name="prix" class="form-control"
+                             id="prix" aria-describedby="emailHelp" type="number" >
+                             
+                       </div>
+                        <div class="modal-footer">
+                           <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Fermer</button>
+                           <button  [disabled]="formationFormedit.invalid"  (click)="onUpdateFormation(editFormation?.id)"
+                              data-dismiss="modal"
+                              class="btn btn-success">Enregistrer</button>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+
+
+
+       
+        </div>
+</div>

@@ -1,0 +1,125 @@
+<app-header></app-header>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<kendo-pdf-export #pdf>    
+<div class="page-content container">
+    <div class="page-header text-blue-d2">
+        <h1 class="page-title text-secondary-d1">
+            Devis
+            <small class="page-info">
+                <i class="fa fa-angle-double-right text-80"></i>
+                ID: #00{{Res.devis.id}}
+            </small>
+        </h1>
+
+        <div class="page-tools">
+            <div class="action-buttons">
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="container px-0">
+        <div class="row mt-4">
+            <div class="col-12 col-lg-10 offset-lg-1">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="text-center text-150">
+                          <img  src="assets/images/TenStep.jpg" width="200"><br>
+                            
+                        </div>
+                    </div>
+                </div>
+                <!-- .row -->
+
+                <hr class="row brc-default-l1 mx-n1 mb-4" />
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div>
+                            <span class="text-sm text-grey-m2 align-middle">Client:</span>
+                            <span class="text-600 text-110 text-blue align-middle">{{Res.participant.nom}}</span>
+                        </div>
+                        <div class="text-grey-m2">
+                            <div class="my-1">
+                                Street, City
+                            </div>
+                            <div class="my-1">
+                                State, Country
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+
+                    <div class="text-95 col-sm-6 align-self-start d-sm-flex justify-content-end">
+                        <hr class="d-sm-none" />
+                        <div class="text-grey-m2">
+                            <div class="mt-1 mb-2 text-secondary-m1 text-600 text-125">
+                                Invoice
+                            </div>
+
+                            <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">ID:</span>#00{{Res.devis.id}}</div>
+
+
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                </div>
+
+                <div class="mt-4">
+                    <div class="row text-600 text-white bgc-default-tp1 py-25">
+                        <div class="d-none d-sm-block col-1">#</div>
+                        <div class="col-9 col-sm-5">Formation </div>
+                        <div class="d-none d-sm-block col-4 col-sm-2">Nombre de participant</div>
+                        <div class="d-none d-sm-block col-sm-2">Prix</div>
+                        
+                    </div>
+
+                    <div class="text-95 text-secondary-d3">
+                        
+
+                        <div class="row mb-2 mb-sm-0 py-25">
+                            <div class="d-none d-sm-block col-1">{{Res.formation.id}}</div>
+                            <div class="col-9 col-sm-5">{{Res.formation.nom}}</div>
+                            <div class="d-none d-sm-block col-2">{{Res.devis.nbrParticipant}}</div>
+                            <div class="d-none d-sm-block col-2 text-95">{{Res.formation.prix}}</div>
+                            
+                        </div>
+
+                    </div>
+
+                    <div class="row border-b-2 brc-default-l2"></div>
+
+                    
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-7 text-grey-d2 text-95 mt-2 mt-lg-0">
+                            
+                        </div>
+
+                        <div class="col-12 col-sm-5 text-grey text-90 order-first order-sm-last">
+                          
+
+                            <div class="row my-2 align-items-center bgc-primary-l3 p-2">
+                                <div class="col-7 text-right">
+                                    Total 
+                                </div>
+                                <div class="col-5">
+                                    <span class="text-150 text-success-d3 opacity-2">{{Res.devis.somme}} Dtn</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div>
+                        <div class="print">
+                            <button kendo-button (click)="pdf.saveAs('Devis.pdf')" type="button" class="btn btn-outline-primary">Imprimer</button>
+                          </div>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+</kendo-pdf-export>

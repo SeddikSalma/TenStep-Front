@@ -1,0 +1,205 @@
+<app-header></app-header>
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<div class="body">
+<div class="container mt-4" id="main-container">
+  
+  <div class="container mt-4">
+                  <div class="row">
+                      <div class="col-md-12">
+                          <div class="card">
+                              <div class="card-body">
+                                  <h5 class="card-title text-uppercase mb-0">Liste des Reservations</h5>
+                              </div>
+                              <div class="table-responsive">
+                                <div class="container ">
+                                  <table class="table no-wrap user-table mb-0">
+                                    <thead>
+                                      <tr>                                       
+                                        <th scope="col" style ="font-weight: bold;" class="border-0 text-uppercase font-medium">Nom</th>
+                                        <th scope="col"  style ="font-weight: bold;" class="border-0 text-uppercase font-medium">Date Debut de la formation</th>                                      
+                                        <th scope="col"  style ="font-weight: bold;" class="border-0 text-uppercase font-medium">Nom de la formation</th>                                      
+                                      
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                <tr *ngFor="let Reservation of Reservations">                 
+                  <td>
+                      <h5 class="font-medium mb-0">{{Reservation.id}}</h5>                  
+                  </td>
+                  <td>
+                      <span class="text-muted">{{Reservation.dateDeb|slice:0:10}}</span><br>                    
+                  </td>
+                  <td>
+                    <span class="text-muted">{{Reservation.formation.nom}}</span><br>                  
+                </td>
+                  <td>
+                    <button *ngIf="Reservation.facture==null" type="button" (click)="onOpenModal(Reservation, 'confirm')" class="btn btn-primary btn-lg">Confirmer</button>
+                    <button *ngIf="Reservation.facture!=null" type="button" (click)="onOpenModal(Reservation, 'confirm')" class="btn btn-primary btn-lg disabled">Confirmer</button>
+                  </td>
+                  <td>
+                    <button type="button" (click)="goToPage('resDetail',Reservation.id)" class="btn btn-outline-primary btn-circle btn-lg btn-circle ml-2"><i class="fa fa-info-circle" ></i> </button>                   
+                    <button type="button" (click)="onOpenModal(Reservation, 'delete')" class="btn btn-outline-danger btn-circle btn-lg btn-circle ml-2"><i class="fa fa-trash"></i> </button>
+                    
+                  </td>
+                </tr>
+                
+              </tbody>
+              </table>
+              </div>
+              <div class="container mt-4">
+              <button type="button" class="btn btn-danger btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <i class="fa fa-plus"> Ajouter</i>  
+              </button></div>
+              </div>
+              </div>
+              </div>
+              </div>
+    </div>
+<div class="modal fade" id="exampleModal" role="dialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ajouter une Reservation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="ReservationForm"   autocomplete="off">
+         <div class="form-group">
+            <label for="formation">Formation</label>
+            <select #selectedFormation class="form-select" name="formation" formControlName="formation" required>
+               <!--<option selected disabled>Choose...</option>-->
+               <option *ngFor="let formation of formations" [value]="formation.id"> {{formation.nom}}</option>
+            </select>
+         </div>
+         <div class="form-group">
+            <label for="participant">Participant</label>
+            <select #selectedParticipant class="form-select" name="participant" formControlName="participant" required>
+               <!--<option selected disabled>Choose...</option>-->
+               <option *ngFor="let participant of participants" [value]="participant.id"> {{participant.nom}}</option>
+            </select>
+         </div>
+         <br>
+          <div class="form-group">
+             <input class="form-control" type="datetime-local"  placeholder="dateDeb" formControlName="dateDeb" name="dateDeb"> 
+          </div>
+          <br>
+          <div class="form-group">
+             <input  class="form-control"  type="datetime-local" placeholder="dateFin" formControlName="dateFin" name="dateFin"> 
+          </div>
+          <br>
+          
+         <br>
+          <div class="modal-footer">
+            
+             <button   data-dismiss="modal" type="submit" class="btn btn-primary" (click)="onAddReservation(selectedFormation.value,selectedParticipant.value)"
+              >Enregistrer</button>
+          </div>
+       </form>
+      </div>
+      
+    </div>
+  </div>
+
+
+
+
+</div>
+<div class="modal fade" id="deleteReservationModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <h5 class="modal-title" id="deleteModelLabel">Supprimer la Reservation N° {{deleteReservation?.id}} </h5>
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                     </button>
+                  </div>
+                  <div class="modal-body">
+                     <p>Êtes-vous sûr de vouloir supprimer la Reservation N°{{deleteReservation?.id}} ?</p>
+                     <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
+                        <button (click)="onDeleteReservation(deleteReservation?.id)"
+                          class="btn btn-danger"
+                           data-dismiss="modal">Oui</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+  <div class="modal fade" id="updateReservationModal" tabindex="-1" role="dialog"
+            aria-labelledby="employeeEditModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <h5 class="modal-title" id="updateEmployeeModalLabel">Modifier la Reservation N° {{editReservation?.id}}</h5>
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                     </button>
+                  </div>
+                  <div class="modal-body">
+                     <form  [formGroup]="ReservationFormedit">
+                        <div class="form-group">
+                           <label for="dateFin">Nom</label>
+                           <input  type="date" [formControl]="ReservationFormedit.controls.dateFin"
+                              ngModel="{{editReservation?.dateFin}}" name="dateFin" class="form-control" id="dateFin"
+                              aria-describedby="emailHelp" required>
+                              
+                        </div>
+
+                        <div class="form-group">
+                           <label for="dateDeb">Nombre</label>
+                           <input  [formControl]="ReservationFormedit.controls.dateDeb"
+                              ngModel="{{editReservation?.dateDeb}}" name="dateDeb" class="form-control"
+                              id="dateDeb" aria-describedby="emailHelp"   type="date">
+                              
+                        </div>
+                       
+                        <div class="modal-footer">
+                           <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Fermer</button>
+                           <button  [disabled]="ReservationFormedit.invalid"  (click)="onUpdateReservation(editReservation?.id)"
+                              data-dismiss="modal"
+                              class="btn btn-success">Enregistrer</button>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <div class="modal fade" id="confirmFormationModal" tabindex="-1" role="dialog"
+         aria-labelledby="formateurEditModalLabel" aria-hidden="true">
+         <div class="modal-dialog">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="formateurModalLabel">Confirmer la Reservation N° {{confirmReservation?.id}}</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body">
+                  <form  [formGroup]="ReservationFormFormateur">
+                     
+                     <div class="form-group">
+                        <label for="formateur">Formateur</label>
+                        <select #selectedFormateur class="form-select" name="formateur" formControlName="formateur" required>
+                           <!--<option selected disabled>Choose...</option>-->
+                           <option *ngFor="let formateur of formateurs" [value]="formateur.id"> {{formateur.nom}}</option>
+                        </select>
+                     </div>
+                     <br>
+                     <button   data-dismiss="modal" type="submit" class="btn btn-primary" (click)="onConfirmeReservation(selectedFormateur.value,confirmReservation.id)"
+                     >Enregistrer</button>
+                     <br>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+
+
+       
+        </div>
+</div>
